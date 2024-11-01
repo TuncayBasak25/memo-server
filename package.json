@@ -15,7 +15,11 @@
   "homepage": "https://github.com/TuncayBasak25/new-ts-format#readme",
   "devDependencies": {
     "@types/node": "^17.0.45",
+    "@types/ws": "^8.5.12",
     "ts-node": "^10.9.2",
     "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
   }
 }
