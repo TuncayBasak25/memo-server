@@ -1,0 +1,21 @@
+{
+  "name": "ts-base-template",
+  "version": "1.0.0",
+  "description": "New typescript project",
+  "main": "ts/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TuncayBasak25/new-ts-format.git"
+  },
+  "author": "Tuncay Basak",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TuncayBasak25/new-ts-format/issues"
+  },
+  "homepage": "https://github.com/TuncayBasak25/new-ts-format#readme",
+  "devDependencies": {
+    "@types/node": "^17.0.45",
+    "ts-node": "^10.9.2",
+    "typescript": "^4.9.5"
+  }
+}
