@@ -1,109 +1,7 @@
 import { Socket } from "socket-server";
+import { words } from "./words";
 
-const words = [
-    "chat",
-    "miel",
-    "lune",
-    "arbre",
-    "livre",
-    "ballon",
-    "éléphant",
-    "chaussure",
-    "bateau",
-    "ordinateur",
-    "train",
-    "boite",
-    "montagne",
-    "sablier",
-    "girafe",
-    "corde",
-    "aspirateur",
-    "fourchette",
-    "poubelle",
-    "fromage",
-    "crayon",
-    "bougie",
-    "cerf",
-    "cloche",
-    "cheval",
-    "pomme",
-    "cigare",
-    "marteau",
-    "fusil",
-    "tigre",
-    "chaise",
-    "champignon",
-    "vache",
-    "pirate",
-    "échelle",
-    "bouclier",
-    "robot",
-    "lunette",
-    "éponge",
-    "cookie",
-    "parapluie",
-    "renard",
-    "crocodile",
-    "bague",
-    "parachute",
-    "fleur",
-    "citron",
-    "chien",
-    "télévision",
-    "souris",
-    "brosse",
-    "escalier",
-    "piano",
-    "kelox",
-    "scie",
-    "caméra",
-    "médaille",
-    "tacos",
-    "lampe",
-    "sac",
-    "horloge",
-    "loup",
-    "mouton",
-    "ours",
-    "singe",
-    "serpent",
-    "pizza",
-    "trompette",
-    "banane",
-    "crabe",
-    "requin",
-    "arc",
-    "glaçon",
-    "croissant",
-    "hélicoptère",
-    "carotte",
-    "hibou",
-    "plume",
-    "cerf-volant",
-    "cochon",
-    "poulet",
-    "épouvantail",
-    "carte",
-    "épée",
-    "coquillage",
-    "valise",
-    "licorne",
-    "peinture",
-    "toboggan",
-    "montgolfière",
-    "ananas",
-    "papillon",
-    "perceuse",
-    "aigle",
-    "camionnette",
-    "jumelle",
-    "nuage",
-    "chariot",
-    "tapis",
-    "oeuf",
-];
-
-class Game {
+export class Game {
     clientIdList: number[];
 
     random: number | string | null = null;
@@ -167,7 +65,7 @@ class Game {
             client.delete("word");
             client.delete("number");
         });
-
+        
         const state: any = {};
         state.scores = {};
         this.clients.forEach(client => {
@@ -207,17 +105,3 @@ class Game {
         client.set("score", score);
     }
 }
-
-Socket.listen(Number(process.env.PORT || 8080));
-
-setInterval(() => {
-    const disponible: number[] = [];
-
-    for (const [entry, client] of Socket.sockets.entries()) {
-        if (!client.get("gaming")) disponible.push(entry);
-    }
-
-    if (disponible.length > 1) {
-        new Game(...disponible);
-    }
-}, 1000);

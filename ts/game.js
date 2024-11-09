@@ -1,108 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Game = void 0;
 const socket_server_1 = require("socket-server");
-const words = [
-    "chat",
-    "miel",
-    "lune",
-    "arbre",
-    "livre",
-    "ballon",
-    "éléphant",
-    "chaussure",
-    "bateau",
-    "ordinateur",
-    "train",
-    "boite",
-    "montagne",
-    "sablier",
-    "girafe",
-    "corde",
-    "aspirateur",
-    "fourchette",
-    "poubelle",
-    "fromage",
-    "crayon",
-    "bougie",
-    "cerf",
-    "cloche",
-    "cheval",
-    "pomme",
-    "cigare",
-    "marteau",
-    "fusil",
-    "tigre",
-    "chaise",
-    "champignon",
-    "vache",
-    "pirate",
-    "échelle",
-    "bouclier",
-    "robot",
-    "lunette",
-    "éponge",
-    "cookie",
-    "parapluie",
-    "renard",
-    "crocodile",
-    "bague",
-    "parachute",
-    "fleur",
-    "citron",
-    "chien",
-    "télévision",
-    "souris",
-    "brosse",
-    "escalier",
-    "piano",
-    "kelox",
-    "scie",
-    "caméra",
-    "médaille",
-    "tacos",
-    "lampe",
-    "sac",
-    "horloge",
-    "loup",
-    "mouton",
-    "ours",
-    "singe",
-    "serpent",
-    "pizza",
-    "trompette",
-    "banane",
-    "crabe",
-    "requin",
-    "arc",
-    "glaçon",
-    "croissant",
-    "hélicoptère",
-    "carotte",
-    "hibou",
-    "plume",
-    "cerf-volant",
-    "cochon",
-    "poulet",
-    "épouvantail",
-    "carte",
-    "épée",
-    "coquillage",
-    "valise",
-    "licorne",
-    "peinture",
-    "toboggan",
-    "montgolfière",
-    "ananas",
-    "papillon",
-    "perceuse",
-    "aigle",
-    "camionnette",
-    "jumelle",
-    "nuage",
-    "chariot",
-    "tapis",
-    "oeuf",
-];
+const words_1 = require("./words");
 class Game {
     constructor(...clients) {
         this.random = null;
@@ -140,10 +40,10 @@ class Game {
     loop() {
         if (!this.random) {
             if (Math.random() > 0.5) {
-                this.random = words[Math.floor(Math.random() * words.length)];
+                this.random = words_1.words[Math.floor(Math.random() * words_1.words.length)];
             }
             else {
-                this.random = Math.floor(Math.random() * words.length);
+                this.random = Math.floor(Math.random() * words_1.words.length);
             }
         }
         this.clients.forEach(client => {
@@ -164,10 +64,10 @@ class Game {
             state.scores[client.get("name")] = client.get("score");
         });
         if (typeof this.random == "string") {
-            state.number = words.indexOf(this.random);
+            state.number = words_1.words.indexOf(this.random);
         }
         else {
-            state.word = words[this.random];
+            state.word = words_1.words[this.random];
         }
         this.clients.forEach(client => client.send("state", state));
         setTimeout(() => this.loop(), 10);
@@ -195,14 +95,4 @@ class Game {
         client.set("score", score);
     }
 }
-socket_server_1.Socket.listen(Number(process.env.PORT || 8080));
-setInterval(() => {
-    const disponible = [];
-    for (const [entry, client] of socket_server_1.Socket.sockets.entries()) {
-        if (!client.get("gaming"))
-            disponible.push(entry);
-    }
-    if (disponible.length > 1) {
-        new Game(...disponible);
-    }
-}, 1000);
+exports.Game = Game;
