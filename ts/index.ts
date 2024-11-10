@@ -15,24 +15,6 @@ Socket.listen(Number(process.env.PORT || 8080));
 //     }
 // }, 1000);
 
-Socket.actions.keypress = (client, keycode) => {
-    if (typeof keycode != "number") return;
-
-    let key = "";
-    if (keycode == 37) key = "left"
-    if (keycode == 39) key = "right"
-    if (keycode == 38) key = "up"
-    if (keycode == 40) key = "down"
-    Socket.sockets.forEach(socket => socket != client && socket.sendSet(key, true));
-}
-
-Socket.actions.keyrelease = (client, keycode) => {
-    if (typeof keycode != "number") return;
-
-    let key = "";
-    if (keycode == 37) key = "left"
-    if (keycode == 39) key = "right"
-    if (keycode == 38) key = "up"
-    if (keycode == 40) key = "down"
-    Socket.sockets.forEach(socket => socket != client && socket.sendSet(key, false));
+Socket.actions.keydown = (client, keycode) => {
+    Socket.sockets.forEach(socket => socket != client && socket.sendAction("keydown", keycode));
 }
