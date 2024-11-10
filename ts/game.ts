@@ -20,24 +20,24 @@ export class Game {
         let ready = true;
 
         for (const client of this.clients) {
-            const name = client.get("name");
+            const name = client.data.get("name");
             if (!name) {
                 ready = false;
-                client.query("name");
+                client.sendGet("name");
             }
             if (name == "") {
                 ready = false;
-                client.error("Name has to be not empty!");
-                client.query("name");
+                client.sendError("Name has to be not empty!");
+                client.sendGet("name");
             }
         }
 
-        if (!ready) setTimeout(() => this.init(), 1000);
+        if (!ready) return setTimeout(() => this.init(), 1000);
         else {
             for (const client of this.clients) {
-                client.send("ready", "The game starts in 3 seconds!");
-                client.set("score", 0);
-                client.set("gaming", true);
+                client.sendAction("ready", "The game starts in 3 seconds!");
+                client.data.set("score", 0);
+                client.data.set("gaming", true);
             }
         }
         setTimeout(() => this.loop(), 3000);
@@ -54,22 +54,22 @@ export class Game {
         }
 
         this.clients.forEach(client => {
-            const word = client.get("word");
-            const number = client.get("number");
+            const word = client.data.get("word");
+            const number = client.data.get("number");
             if (typeof this.random == "string" && word) {
                 this.submitWord(client, word);
             }
             else if (typeof this.random == "number" && number) {
                 this.submitNumber(client, number);
             }
-            client.delete("word");
-            client.delete("number");
+            client.data.delete("word");
+            client.data.delete("number");
         });
-        
+
         const state: any = {};
         state.scores = {};
         this.clients.forEach(client => {
-            state.scores[client.get("name") as string] = client.get("score") as number;
+            state.scores[client.data.get("name") as string] = client.data.get("score") as number;
         });
         if (typeof this.random == "string") {
             state.number = words.indexOf(this.random);
@@ -77,12 +77,12 @@ export class Game {
         else {
             state.word = words[this.random];
         }
-        this.clients.forEach(client => client.send("state", state));
-        setTimeout(() => this.loop(), 10);
+        this.clients.forEach(client => client.sendSet("state", state));
+        setTimeout(() => this.loop(), 100);
     }
 
     submitWord(client: Socket, word: string) {
-        let score = client.get("score") as number;
+        let score = client.data.get("score") as number;
         if (this.random == word) {
             score += 5;
             this.random = null;
@@ -90,11 +90,11 @@ export class Game {
         else {
             score -= 10;
         }
-        client.set("score", score);
+        client.data.set("score", score);
     }
 
     submitNumber(client: Socket, number: number) {
-        let score = client.get("score") as number;
+        let score = client.data.get("score") as number;
         if (this.random == number) {
             score += 5;
             this.random = null;
@@ -102,6 +102,6 @@ export class Game {
         else {
             score -= 10;
         }
-        client.set("score", score);
+        client.data.set("score", score);
     }
 }
