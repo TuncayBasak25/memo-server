@@ -190,6 +190,7 @@ Socket.actions.submitAnswer = (socket: Socket, body: { answer?: string }) => {
     const correctWord = words[correctIndex];
     const isCorrect =
         parseInt(answer) === correctIndex || answer.toLowerCase() === correctWord.toLowerCase();
+    const correct = { index: correctIndex, word: correctWord };
 
     const currentTime = Date.now();
     const responseTime = (currentTime - (player.startTime || 0)) / 1000; // Response time in seconds
@@ -210,6 +211,7 @@ Socket.actions.submitAnswer = (socket: Socket, body: { answer?: string }) => {
         opponent.socket.sendAction('notification', {
             message: `${player.name} answered correctly!`,
             type: 'opponentSuccess',
+            correct
         });
 
         player.startTime = undefined;
