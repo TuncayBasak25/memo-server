@@ -155,6 +155,7 @@ socket_server_1.Socket.actions.submitAnswer = (socket, body) => {
             type: 'opponentSuccess',
         });
         player.startTime = undefined;
+        askNextQuestion(game);
     }
     else {
         player.score -= 10;
@@ -168,5 +169,4 @@ socket_server_1.Socket.actions.submitAnswer = (socket, body) => {
             type: 'opponentFailure',
         });
     }
-    askNextQuestion(game);
 };

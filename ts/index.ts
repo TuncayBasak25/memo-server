@@ -213,6 +213,7 @@ Socket.actions.submitAnswer = (socket: Socket, body: { answer?: string }) => {
         });
 
         player.startTime = undefined;
+        askNextQuestion(game);
     } else {
         player.score -= 10;
 
@@ -227,6 +228,4 @@ Socket.actions.submitAnswer = (socket: Socket, body: { answer?: string }) => {
             type: 'opponentFailure',
         });
     }
-
-    askNextQuestion(game);
 };
